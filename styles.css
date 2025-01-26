@@ -57,13 +57,13 @@ button{
     display: inline-flex;
     margin-left: 30px;
 }
-.edimove #edit{
+.edimove .edit{
     color: green;
     font-weight: bold;
     font-family: Poppins, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     cursor: pointer;
 }
-.edimove #remove{
+.edimove .remove{
     color: red;
     font-weight: bold;
     font-family: Poppins, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;

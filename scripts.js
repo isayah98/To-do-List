@@ -2,21 +2,54 @@ let myList= document.getElementById("to-do");
 let pressButton= document.getElementById('addEdit');
 let myContainer = document.querySelector(".my-do");
 
-pressButton.addEventListener("click", function(){
-    let inputValue =myList.value;
-    let inputLeng = inputValue.length;
-    
-    if(inputLeng > 0)
-    {
-        let newItem = `<div class="list">
-        <span id="do">${inputValue}</span>
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    let savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    savedTasks.forEach(task => {
+        addTaskToDOM(task);
+    });
+});
+
+function addTaskToDOM(taskText) {
+    let newItem = `<div class="list">
+        <span class="do">${taskText}</span>
         <div class="edimove">
-            <span id="edit">Edit</span>
-            <span id="remove">Remove</span>
+            <span class="edit">Edit</span>
+            <span class="remove">Remove</span>
         </div>
     </div>`;
     myContainer.insertAdjacentHTML('beforeend', newItem);
-    document.querySelector(".list").style.display ="block";
-    myList.value = "";
+}
+
+function saveTasks() {
+    let allTasks = Array.from(document.querySelectorAll(".do")).map(task => task.textContent);
+    localStorage.setItem("tasks", JSON.stringify(allTasks));
+}
+
+
+pressButton.addEventListener("click", function() {
+    let inputValue = myList.value.trim();
+    if (inputValue !== "") {
+        addTaskToDOM(inputValue);
+        saveTasks();
+        myList.value = "";
     }
 });
+
+
+myContainer.addEventListener("click", function(e) {
+    if (e.target.classList.contains("remove")) {
+        e.target.closest(".list").remove();
+        saveTasks();
+    }
+});
+
+myContainer.addEventListener("click", function(e){
+    if(e.target.classList.contains("edit")){
+        pressButton.innerHTML="Edit";
+        let listItem = e.target.closest("do");  // Find the closest <li> element
+        alert("You clicked Edit on:", listItem);
+        
+    }
+})
