@@ -29,13 +29,37 @@ function saveTasks() {
 
 
 pressButton.addEventListener("click", function() {
-    let inputValue = myList.value.trim();
+    let buttonInput =pressButton.textContent;
+    if(buttonInput === "Edit")
+    {
+        let newText = myList.value.trim();
+        
+        if (newText !== "") {
+            let savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            savedTasks[pressButton.dataset.index] = newText;
+            localStorage.setItem("tasks", JSON.stringify(savedTasks));
+
+            let allList = document.querySelectorAll(".list");
+            let theElement = allList[pressButton.dataset.index];
+            let inneElem =theElement.querySelector(".do");
+            inneElem.textContent =newText;
+            
+
+            pressButton.textContent = "Add";
+            myList.value = "";
+    }
+    else{
+        let inputValue = myList.value.trim();
     if (inputValue !== "") {
         addTaskToDOM(inputValue);
         saveTasks();
         myList.value = "";
     }
+    }
+    }
+    
 });
+
 
 
 myContainer.addEventListener("click", function(e) {
@@ -43,13 +67,20 @@ myContainer.addEventListener("click", function(e) {
         e.target.closest(".list").remove();
         saveTasks();
     }
+    else if(e.target.classList.contains("edit")){
+        let itemElement = e.target.closest(".list");
+        let itemText =itemElement.querySelector(".do").textContent;
+        let collectedinfo =JSON.parse(localStorage.getItem("tasks")) || [];
+        let index = collectedinfo.findIndex(info => info === itemText);
+        
+        if(index !== -1){
+            myList.value = itemText;
+            pressButton.textContent ="Edit";
+            pressButton.dataset.index = index;
+        }
+       
+    }
 });
 
-myContainer.addEventListener("click", function(e){
-    if(e.target.classList.contains("edit")){
-        pressButton.innerHTML="Edit";
-        let listItem = e.target.closest("do");  // Find the closest <li> element
-        alert("You clicked Edit on:", listItem);
-        
-    }
-})
+
+
