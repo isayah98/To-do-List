@@ -47,6 +47,7 @@ pressButton.addEventListener("click", function() {
 
             pressButton.textContent = "Add";
             myList.value = "";
+        }
     }
     else{
         let inputValue = myList.value.trim();
@@ -56,7 +57,7 @@ pressButton.addEventListener("click", function() {
         myList.value = "";
     }
     }
-    }
+    
     
 });
 
